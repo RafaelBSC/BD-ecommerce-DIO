@@ -1,55 +1,20 @@
 # BD-ecommerce-DIO
 projeto de banco de dados de e-commerce
 
-Aqui tem as query das perguntas para que seja consultado no BD que está postado.
 
--- Quantos pedidos foram feitos por cada cliente?
+Esse projeto tem 5 arquivos, o "BD ecommerce" e o "incersão de dados" são sem modificações
 
-
-SELECT 
-    c.Fname,
-    c.Lname,
-    COUNT(o.idOrder) AS total_pedidos
-FROM clients c
-LEFT JOIN orders o ON c.idClient = o.idOrderClient
-GROUP BY c.idClient, c.Fname, c.Lname
-ORDER BY total_pedidos DESC;             
-
--- Algum vendedor também é fornecedor?
+Os arquivos "ecommerce2" e "dados ecommerce2" tem os seguintes refinamentos:
+-Cliente PJ e PF – Uma conta pode ser PJ ou PF, mas não pode ter as duas informações;
+-Pagamento – Pode ter cadastrado mais de uma forma de pagamento;
+-Entrega – Possui status e código de rastreio;
 
 
-SELECT 
-    s.SocialName AS nome_vendedor,
-    sup.SocialName AS nome_fornecedor
-FROM seller s
-INNER JOIN supplier sup
-    ON s.CNPJ IS NOT NULL 
-    AND s.CNPJ = sup.CNPJ;
-
--- Relação de produtos fornecedores e estoques
+O arquivo ".txt" te m as querys para as seguintes perguntas:
+-Quantos pedidos foram feitos por cada cliente?
+-Algum vendedor também é fornecedor?
+-Relação de produtos fornecedores e estoques;
+-Relação de nomes dos fornecedores e nomes dos produtos;
 
 
-SELECT 
-    p.Pname AS produto,
-    sup.SocialName AS fornecedor,
-    ps.quantity AS quantidade_fornecedor,
-    psStorage.quantity AS quantidade_estoque,
-    psStorage.storageLocation AS local_estoque
-FROM product p
-INNER JOIN productSupplier ps ON p.idProduct = ps.idPsProduct
-INNER JOIN supplier sup ON ps.idPsSupplier = sup.idSupplier
-LEFT JOIN productStorage psStorage ON psStorage.idProdStorage IN (
-    SELECT idLstorage FROM storageLocation sl WHERE sl.idLproduct = p.idProduct
-)
-ORDER BY p.Pname;
 
--- Relação de nomes dos fornecedores e nomes dos produtos
-
-
-SELECT 
-    sup.SocialName AS fornecedor,
-    p.Pname AS produto
-FROM supplier sup
-INNER JOIN productSupplier ps ON sup.idSupplier = ps.idPsSupplier
-INNER JOIN product p ON ps.idPsProduct = p.idProduct
-ORDER BY sup.SocialName, p.Pname;
