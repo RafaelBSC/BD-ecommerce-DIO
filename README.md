@@ -4,6 +4,8 @@ projeto de banco de dados de e-commerce
 Aqui tem as query das perguntas para que seja consultado no BD que está postado.
 
 -- Quantos pedidos foram feitos por cada cliente?
+
+
 SELECT 
     c.Fname,
     c.Lname,
@@ -14,6 +16,8 @@ GROUP BY c.idClient, c.Fname, c.Lname
 ORDER BY total_pedidos DESC;             
 
 -- Algum vendedor também é fornecedor?
+
+
 SELECT 
     s.SocialName AS nome_vendedor,
     sup.SocialName AS nome_fornecedor
@@ -23,6 +27,7 @@ INNER JOIN supplier sup
     AND s.CNPJ = sup.CNPJ;
 
 -- Relação de produtos fornecedores e estoques
+
 
 SELECT 
     p.Pname AS produto,
@@ -39,6 +44,8 @@ LEFT JOIN productStorage psStorage ON psStorage.idProdStorage IN (
 ORDER BY p.Pname;
 
 -- Relação de nomes dos fornecedores e nomes dos produtos
+
+
 SELECT 
     sup.SocialName AS fornecedor,
     p.Pname AS produto
